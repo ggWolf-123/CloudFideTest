@@ -21,13 +21,13 @@ def evaluation_of_expression(node: ast.AST, df: pd.DataFrame)->pd.Series:
     if operation is None:
         raise ValueError("Operation is unsupported")
     if not (isinstance(node.left, ast.Name)
-            or isinstance(node.right, ast.Name)):
+            and isinstance(node.right, ast.Name)):
         raise ValueError("Only names of columns are allowed")
 
     l_name=node.left.id
     r_name=node.right.id
 
-    if l_name not in df.columns or l_name not in df.columns:
+    if l_name not in df.columns or r_name not in df.columns:
         raise ValueError("Column unknown")
 
     return operation(df[l_name],df[r_name])
@@ -40,6 +40,8 @@ def add_virtual_column(
     if not isinstance(df,pd.DataFrame):
         return pd.DataFrame([])
     if not isinstance(role,str):
+        return pd.DataFrame([])
+    if "(" in role or ")" in role:
         return pd.DataFrame([])
     if not df.columns.is_unique:
         return pd.DataFrame([])
