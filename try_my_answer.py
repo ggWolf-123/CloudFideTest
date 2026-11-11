@@ -22,7 +22,7 @@ def main()->None:
             "quality-price",
             "sub"
         )
-    print(f"\Substraction DataFrame:\n{result_sub}")
+    print(f"\nSubstraction DataFrame:\n{result_sub}")
 
     result_mul=add_virtual_column(
             df,
@@ -33,7 +33,7 @@ def main()->None:
 
     result_super=add_virtual_column(
             df,
-            "quality*price-price",
+            "quality*(price-price)",
             "mul"
         )
     print(f"\nSuper DataFrame:\n{result_super}")

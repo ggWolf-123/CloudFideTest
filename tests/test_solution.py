@@ -182,13 +182,11 @@ def test_input_dataframe_is_not_modified():
     pd.testing.assert_frame_equal(df, original)
 
 
-def test_multiple_operations_are_rejected():
-    df = pd.DataFrame(
-        {
-            "label_one": [1],
-            "label_two": [2],
-        }
-    )
+def test_multiple_operations_are_supported():
+    df = pd.DataFrame({
+        "label_one": [2],
+        "label_two": [3],
+    })
 
     result = add_virtual_column(
         df,
@@ -196,24 +194,22 @@ def test_multiple_operations_are_rejected():
         "label_three"
     )
 
-    assert result.empty
+    assert result["label_three"].iloc[0] == 8
 
 
-def test_parentheses_are_rejected():
-    df = pd.DataFrame(
-        {
-            "label_one": [1],
-            "label_two": [2],
-        }
-    )
+def test_parentheses_are_supported():
+    df = pd.DataFrame({
+        "label_one": [2],
+        "label_two": [3],
+    })
 
     result = add_virtual_column(
         df,
-        "(label_one + label_two)",
+        "(label_one + label_two) * label_one",
         "label_three"
     )
 
-    assert result.empty
+    assert result["label_three"].iloc[0] == 10
 
 
 def test_duplicate_column_names_are_rejected():
